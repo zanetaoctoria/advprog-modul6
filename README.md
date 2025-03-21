@@ -74,3 +74,9 @@ Kode ini menentukan respons berdasarkan `request_line`. Jika permintaan adalah `
 Refactoring dilakukan untuk meningkatkan keterbacaan dan struktur kode tanpa mengubah fungsinya. Pada tahap ini, refactoring bertujuan untuk menghindari kode yang berulang—misalnya, dalam mendefinisikan `status_line`, menghitung `Content-Length`, dan sebagainya. Dengan perubahan ini, kode menjadi lebih bersih, lebih mudah dipahami, serta lebih fleksibel untuk pemeliharaan dan pengembangan di masa mendatang.
 
 ![Commit 3 screen capture](images/commit3.png)
+
+## (4) Commit 4  
+
+Saat mengakses `127.0.0.1/sleep`, server akan berhenti menjalankan eksekusi selama 5 detik. Selama jeda ini, seluruh proses di server akan terblokir karena aplikasi masih berjalan dalam mode single-thread.  
+
+Jika pada saat yang sama kita mencoba membuka `127.0.0.1/` di browser lain, permintaan baru tersebut tidak akan langsung diproses. Sebaliknya, permintaan tersebut akan tertunda hingga eksekusi dari `127.0.0.1/sleep` selesai. Hal ini terjadi karena dalam arsitektur single-thread, server hanya dapat menangani satu permintaan dalam satu waktu.
