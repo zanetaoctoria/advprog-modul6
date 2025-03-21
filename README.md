@@ -1,4 +1,4 @@
-## (1) Commit 1 : Penjelasan Fungsi `handle_connection`
+## (1) Commit 1 : `handle_connection`
 
 Fungsi `handle_connection` digunakan untuk menangani permintaan dari klien, yaitu koneksi TCP yang diterima melalui `TcpListener`.
 
@@ -28,3 +28,32 @@ let http_request: Vec<_> = buf_reader
 println!("Request: {:#?}", http_request);
 ```
 Setelah itu, isi permintaan HTTP dicetak dalam format debug untuk mempermudah proses debugging.
+
+## (2) Commit 2 : `new handle_connection`
+Setelah dilakukan perubahan, fungsi `handle_connection` kini mampu membaca permintaan HTTP dan mengembalikan respons berupa file HTML.
+
+---
+**Perubahan yang ditambahkan dalam kode:**  
+```rust
+let status_line = "HTTP/1.1 200 OK";  
+let contents = fs::read_to_string("hello.html").unwrap();  
+let length = contents.len();  
+```
+- `status_line = "HTTP/1.1 200 OK"` menetapkan status HTTP dalam respons, di mana `200 OK` menunjukkan bahwa permintaan berhasil diproses.  
+- `fs::read_to_string("hello.html").unwrap()` mengambil isi file `hello.html`, dan jika file tidak ditemukan, `unwrap()` akan menyebabkan program berhenti dengan error.  
+- `length = contents.len();` menghitung ukuran file dalam satuan byte.  
+
+---
+```rust
+let response =  
+    format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");  
+```
+Kode ini menyusun format respons HTTP yang akan dikirimkan ke klien.
+
+---
+```rust
+stream.write_all(response.as_bytes()).unwrap();
+```
+Bagian ini mengubah respons menjadi byte dan mengirimkannya melalui `TcpStream`, sehingga klien dapat menerimanya.
+
+![Commit 2 screen capture](images/commit2.png)
