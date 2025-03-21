@@ -80,3 +80,14 @@ Refactoring dilakukan untuk meningkatkan keterbacaan dan struktur kode tanpa men
 Saat mengakses `127.0.0.1/sleep`, server akan berhenti menjalankan eksekusi selama 5 detik. Selama jeda ini, seluruh proses di server akan terblokir karena aplikasi masih berjalan dalam mode single-thread.  
 
 Jika pada saat yang sama kita mencoba membuka `127.0.0.1/` di browser lain, permintaan baru tersebut tidak akan langsung diproses. Sebaliknya, permintaan tersebut akan tertunda hingga eksekusi dari `127.0.0.1/sleep` selesai. Hal ini terjadi karena dalam arsitektur single-thread, server hanya dapat menangani satu permintaan dalam satu waktu.
+
+## (5) Commit 5
+ThreadPool berfungsi dengan memanfaatkan kembali thread yang sudah dibuat, serta mencegah server mengalami kelebihan beban dengan membatasi jumlah permintaan yang diproses secara bersamaan. Dengan menggunakan ThreadPool, beberapa permintaan dapat dieksekusi secara bersamaan karena request akan didistribusikan ke worker thread yang tersedia. Hal ini memungkinkan server menangani beberapa permintaan secara paralel, sehingga meningkatkan efisiensi dan kinerja sistem.
+
+
+
+
+
+
+
+
