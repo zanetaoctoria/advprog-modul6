@@ -57,3 +57,20 @@ stream.write_all(response.as_bytes()).unwrap();
 Bagian ini mengubah respons menjadi byte dan mengirimkannya melalui `TcpStream`, sehingga klien dapat menerimanya.
 
 ![Commit 2 screen capture](images/commit2.png)
+
+## (3) Commit 3  : Cara Memisahkan Respons  
+Pemilahan respons dilakukan berdasarkan tiga elemen utama dalam HTTP Headers: metode permintaan (`request method`), path, dan versi HTTP. Berikut adalah potongan kode yang mengatur pemisahan tersebut:  
+
+```rust
+let (status_line, filename) = if request_line == "GET / HTTP/1.1" {
+    ("HTTP/1.1 200 OK", "hello.html")
+} else {
+    ("HTTP/1.1 404 NOT FOUND", "404.html")
+};
+```
+Kode ini menentukan respons berdasarkan `request_line`. Jika permintaan adalah `"GET / HTTP/1.1"`, maka halaman utama (`hello.html`) akan ditampilkan. Jika permintaan mengarah ke path lain yang tidak dikenali, server akan mengembalikan halaman error (`404.html`).  
+
+### Mengapa Refactoring Diperlukan?  
+Refactoring dilakukan untuk meningkatkan keterbacaan dan struktur kode tanpa mengubah fungsinya. Pada tahap ini, refactoring bertujuan untuk menghindari kode yang berulang—misalnya, dalam mendefinisikan `status_line`, menghitung `Content-Length`, dan sebagainya. Dengan perubahan ini, kode menjadi lebih bersih, lebih mudah dipahami, serta lebih fleksibel untuk pemeliharaan dan pengembangan di masa mendatang.
+
+![Commit 3 screen capture](images/commit3.png)
